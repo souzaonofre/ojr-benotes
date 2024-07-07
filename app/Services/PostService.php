@@ -39,7 +39,7 @@ class PostService
         }
 
         if ($tag_id > 0) {
-            $post_ids = PostTag::where('tag_id', $tag_id)->select('post_id')->get();
+            $post_ids = PostTag::query()->where('tag_id', $tag_id)->select('post_id')->get();
             $posts = $posts->whereIn('id', $post_ids);
         }
 
