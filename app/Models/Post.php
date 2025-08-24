@@ -56,12 +56,14 @@ class Post extends Model
         'deleted_at'
     ];
 
-    public function getTypeAttribute($value)
+    protected function type(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-        if (intval($value) === self::POST_TYPE_LINK) {
-            return 'link';
-        }
-        return 'text';
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function ($value) {
+            if (intval($value) === self::POST_TYPE_LINK) {
+                return 'link';
+            }
+            return 'text';
+        });
     }
 
     public static function getTypeFromString($value)
@@ -72,24 +74,20 @@ class Post extends Model
             return self::POST_TYPE_LINK;
         }
     }
-
-    public function getImagePathAttribute($value)
+    protected function imagePath(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
-
-        if (Str::startsWith($value, 'thumbnail_')) {
-            return Storage::url('thumbnails/' . $value);
-        }
-
-        return $value;
-    }
-
-    public function setImagePathAttribute($value)
-    {
-        if (empty($value)) {
-            $this->attributes['image_path'] = null;
-            return;
-        }
-        $this->attributes['image_path'] = (strlen($value) > 512) ? null : $value;
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function ($value) {
+            if (Str::startsWith($value, 'thumbnail_')) {
+                return Storage::url('thumbnails/' . $value);
+            }
+            return $value;
+        }, set: function ($value) {
+            if (empty($value)) {
+                $this->attributes['image_path'] = null;
+                return;
+            }
+            return ['image_path' => null, 'image_path' => (strlen($value) > 512) ? null : $value];
+        });
     }
 
     /**

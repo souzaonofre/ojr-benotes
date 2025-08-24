@@ -17,9 +17,9 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'id' => $this->faker->randomNumber(),
-            'title' => $this->faker->title(),
-            'content' => $this->faker->sentence(),
+            'id' => fake()->randomNumber(),
+            'title' => fake()->title(),
+            'content' => fake()->sentence(),
             'collection_id' => (Collection::count() > 0) ? Collection::first()->id : null,
             'type' => Post::POST_TYPE_TEXT,
             'user_id' => User::first()->id,

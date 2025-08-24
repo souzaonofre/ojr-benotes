@@ -15,9 +15,9 @@ class CollectionFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->company(),
+            'name' => fake()->company(),
             'user_id' => User::first()->id,
-            'icon_id' => $this->faker->numberBetween(101, 108),
+            'icon_id' => fake()->numberBetween(101, 108),
             'parent_id' => null
         ];
     }

@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
@@ -45,12 +45,13 @@ class AuthController extends Controller
         try {
             $data = [
                 "token" => [
-                    "access_token" => Auth::refresh(),
+                    "access_token" => Auth::guard('api')->refresh(true, true),
                     "token_type"   => 'Bearer',
                     "expire"       => (int) config('jwt.ttl')
                 ]
             ];
             return response()->json(compact('data'));
+
         } catch (JWTException $e) {
             return response()->json('', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
