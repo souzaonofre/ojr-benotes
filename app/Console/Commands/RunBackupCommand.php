@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Database\ConfigurationUrlParser;
-use Illuminate\Support\Arr;
+# use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Spatie\DbDumper\Databases\MySql;
@@ -36,7 +36,7 @@ class RunBackupCommand extends Command
      *
      * @return void
      */
-    public function handle()
+    public function handle(): void
     {
 
         $tempDirPath = config('benotes.temporary_directory');
@@ -118,7 +118,7 @@ class RunBackupCommand extends Command
         }
 
         if ($driver === 'sqlite') {
-            // put here, just in case someone might use sqlite 
+            // put here, just in case someone might use sqlite
             // and provides a database url
             return $dumper->setDbName($dbConfig['database']);
         }

@@ -51,11 +51,17 @@ class ExportCommand extends Command
             return;
         }
 
-        $user = User::where('email', $email)->firstOrFail();
+        $user = User::query()
+            ->where('email', $email)
+            ->firstOrFail();
 
-        $collection = Collection::where('id', $collection_id)->where('user_id', $user->id)->firstOrFail();
+        $collection = Collection::query()
+            ->where('id', $collection_id)
+            ->where('user_id', $user->id)
+            ->firstOrFail();
 
-        $posts = Post::select('title', 'content')
+        $posts = Post::query()
+            ->select('title', 'content')
             ->where('collection_id', $collection_id)
             ->whereNull('deleted_at')
             ->orderBy('order', 'desc')

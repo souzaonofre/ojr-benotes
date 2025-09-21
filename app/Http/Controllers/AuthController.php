@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
+use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 
 class AuthController extends Controller
 {
@@ -43,9 +44,14 @@ class AuthController extends Controller
         }
 
         try {
+            /**
+             * @var JWTGuard
+             */
+            $jwtGuard = Auth::guard('api');
+
             $data = [
                 "token" => [
-                    "access_token" => Auth::guard('api')->refresh(true, true),
+                    "access_token" => $jwtGuard->refresh(true, true),
                     "token_type"   => 'Bearer',
                     "expire"       => (int) config('jwt.ttl')
                 ]
